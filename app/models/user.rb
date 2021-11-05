@@ -11,5 +11,5 @@ class User < ApplicationRecord
   :with => /\b(|(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.+)|([A-Za-z0-9]+\++))*[A-Za-z0-9]+@((\w+\-+)|(\w+\.))*\w{1,63}\.[a-zA-Z]{2,6})\b/i
 
   # https://www.campuscode.com.br/conteudos/codigo-ruby-para-calculo-de-validacao-de-cpf
-  # validates :cpf, cpf: { message: 'Sua mensagem de validação' }, length: { in: 11..14 }, uniqueness: true
+  validates :cpf, length: { in: 11..14 }, uniqueness: true
 end
