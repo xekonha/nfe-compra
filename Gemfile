@@ -30,6 +30,7 @@ gem 'bootsnap', '>= 1.4.2', require: false
 
 gem 'devise'
 gem 'devise-i18n'
+gem "xsv"
 
 gem 'autoprefixer-rails', '10.2.5'
 gem 'font-awesome-sass'
@@ -49,7 +50,14 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  # Gerar Seeds
+  gem 'faker'
+  gem 'cpf_faker'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+# https://rubygems.org/gems/validates_timeliness/versions/4.0.2
+# validar data
+gem 'validates_timeliness', '~> 4.0', '>= 4.0.2'
