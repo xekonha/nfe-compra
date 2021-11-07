@@ -1,19 +1,27 @@
 class CpfValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
-    return if value.blank?
+    if value.blank?
+      record.errors.add(
+        attribute,
+        :invalid_cpf,
+        message: ' deve ser preenchido!',
+      )
+      return
+    end
+
     return if cpf_valid?(value)
 
     record.errors.add(
       attribute,
       :invalid_cpf,
-      message: options[:message] || 'is not valid',
+      message: 'CPF inválido',
       value: value
     )
   end
 
   private
 
-  DENY_LIST = %w[
+  DENY_LIST = %w(
     00000000000
     11111111111
     22222222222
@@ -26,12 +34,12 @@ class CpfValidator < ActiveModel::EachValidator
     99999999999
     12345678909
     01234567890
-  ].freeze
+  ).freeze
 
-  SIZE_VALIDATION = /^[0-9]{11}$/
+  SIZE_VALIDATION = /^\d{11}$/
 
   def cpf_valid?(cpf)
-    cpf.gsub!(/[^\d]/, '')
+    cpf.gsub!(/\D/, '')
     return unless cpf =~ SIZE_VALIDATION
     return if DENY_LIST.include?(cpf)
 
@@ -40,26 +48,25 @@ class CpfValidator < ActiveModel::EachValidator
   end
 
   def first_digit_valid?(cpf_numbers)
-    first_digits = cpf_numbers[0..9]
+    first_digits = cpf_numbers[0..8]
     multiplied = first_digits.map.with_index do |number, index|
-      number * (10 - index)
+      number * (index + 1)
     end
 
-    mod = multiplied.reduce(:+) % 11
-
-    fst_verifier_digit = 11 - mod > 9 ? 0 : mod
-    fst_verifier_digit == cpf_numbers[10]
+    mod = multiplied.sum % 11
+    fst_verifier_digit = mod > 9 ? 0 : mod
+    fst_verifier_digit == cpf_numbers[9]
   end
 
   def second_digit_valid?(cpf_numbers)
-    second_digits = cpf_numbers[0..10]
+    second_digits = cpf_numbers[0..9]
     multiplied = second_digits.map.with_index do |number, index|
-      number * (11 - index)
+      number * index
     end
 
-    mod = multiplied.reduce(:+) % 11
+    mod = multiplied.sum % 11
 
-    snd_verifier_digit = 11 - mod > 9 ? 0 : mod
-    snd_verifier_digit == cpf_numbers[11]
+    snd_verifier_digit = mod > 9 ? 0 : mod
+    snd_verifier_digit == cpf_numbers[10]
   end
 end
