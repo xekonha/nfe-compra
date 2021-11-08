@@ -4,53 +4,49 @@
     <title>NfeCompra</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <!-- gov.br -->
     <!-- Fonte Rawline -->
-    <link rel='stylesheet' href='https://cdn.dsgovserprodesign.estaleiro.serpro.gov.br/design-system/fonts/rawline/css/rawline.css'/>
-
+    <link rel="stylesheet" href="https://cdn.dsgovserprodesign.estaleiro.serpro.gov.br/design-system/fonts/rawline/css/rawline.css"/>
     <!-- Fonte Raleway -->
-    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Raleway:300,400,500,600,700,800,900&amp;display=swap'/>
-
-    <!-- Fonte awesome -->
-    <link rel='stylesheet' href='https://cdnjs.cloudfare.com/ajax/libs/font-awesome/5.11.2/all.min.css'/>
-    <!-- fim de gov.br -->
-
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>
-    <script src="node_modules\@govbr\dsgov\dist\dsgov.min.js"> </script>
-
-    <!-- Font Rawline-->
-        <link
-            rel="stylesheet"
-            href="https://cdn.dsgovserprodesign.estaleiro.serpro.gov.br/design-system/fonts/rawline/css/rawline.css"
-        />
-        <!-- Font Raleway-->
-        <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Raleway:300,400,500,600,700,800,900;display=swap"
-        />
-        <!-- DSGOV CSS-->
-        <link
-            rel="stylesheet"
-            href="node_modules\@govbr\dsgov\dist\dsgov.min.css"
-        />
-  </head>
-
-  <body>
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-12 col-lg-12">
-          <!-- This div is centered and takes 10 columns -->
-          <%= render 'shared/navbar' %>
-          <%= render 'shared/flashes' %>
-
-          <%= yield %>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Raleway:300,400,500,600,700,800,900&amp;display=swap"
+    />
+      <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"
+    />
+        <!-- fim de gov.br -->
+        <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+        <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>
+      </head>
+      <body>
+        <div class="template-base">
+          <!-- Atalhos de Teclado aqui -->
+          <nav id="skip-links">
+          </nav>
+          <!-- Header -->
+          <%= render 'shared/header' %>
+          <!-- Área de conteúdo -->
+          <main id="main" class="d-flex flex-fill">
+            <!-- Define a largura da página -->
+            <div class="container-lg d-flex">
+              <div class="row">
+                <!-- Menu aqui -->
+                <!-- Coluna do conteúdo aqui -->
+                <div class="col pt-3 pb-5">
+                  <!-- Conteúdo Principal aqui -->
+                  <div id="main-content" class="main-content pl-sm-3">
+                    <%= yield %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </main>
+          <!-- Footer aqui -->
+          <footer id="footer" class="br-footer"></footer>
         </div>
-      </div>
-    </div>
-  </body>
-</html>
+        <%= render 'shared/flashes' %>
+      </body>
+    </html>

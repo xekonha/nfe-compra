@@ -26,7 +26,7 @@ require("channels")
 // import "bootstrap";
 
 // gov.br
-import '@govbr/dsgov/dist/dsgov';
+import "@govbr/dsgov/dist/dsgov";
 
 // Internal imports, e.g:
 // import { initSelect2 } from '../components/init_select2';
