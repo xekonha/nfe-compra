@@ -7,9 +7,22 @@ class User < ApplicationRecord
   # itens por CPF, sem procurar notas vinculadas a CPF
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-  validates_format_of :email,
-  :with => /\b(|(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.+)|([A-Za-z0-9]+\++))*[A-Za-z0-9]+@((\w+\-+)|(\w+\.))*\w{1,63}\.[a-zA-Z]{2,6})\b/i
 
-  # https://www.campuscode.com.br/conteudos/codigo-ruby-para-calculo-de-validacao-de-cpf
-  validates :cpf, length: { in: 11..14 }, uniqueness: true
+  validates :cpf, uniqueness: true, cpf: true
+  validates :email, presence: true, email: true
+
+  # https://stackoverflow.com/questions/7097921/devise-how-to-change-setting-so-that-email-addresses-dont-need-to-be-unique
+  def email_required?
+    false
+  end
+
+  def email_changed?
+    false
+  end
+
+  # For ActiveRecord 5.1+
+  def will_save_change_to_email?
+    false
+  end
+
 end

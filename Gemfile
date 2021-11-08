@@ -61,3 +61,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 # https://rubygems.org/gems/validates_timeliness/versions/4.0.2
 # validar data
 gem 'validates_timeliness', '~> 4.0', '>= 4.0.2'
+
+# https://github.com/svenfuchs/i18n-active_record
+gem 'i18n-active_record', require: 'i18n/active_record'
