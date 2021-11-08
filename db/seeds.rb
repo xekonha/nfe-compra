@@ -5,7 +5,6 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-
 10.times {
   @user = User.new
   @user.email = Faker::Internet.email
@@ -15,7 +14,6 @@
   @user.save!
 }
 puts 'criados 10 Users novos'
-
 User.all.each { |user|
   rand(3..10).times {
     @pedido = Pedido.new
@@ -28,5 +26,4 @@ User.all.each { |user|
     @pedido.save!
   }
 }
-
 puts 'criados pedidos'
