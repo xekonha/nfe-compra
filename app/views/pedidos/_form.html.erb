@@ -1,0 +1,13 @@
+<%= simple_form_for(@pedido) do |f| %>
+  <%= f.error_notification %>
+  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
+  <div class="form-inputs m-1">
+    <%= f.input :periodo_inicial, label: "Período Inicial" %>
+    <%= f.input :periodo_final, label: "Período Final" %>
+  </div>
+
+  <div class="form-actions mt-5">
+    <%= f.submit 'Pesquisar' %>
+  </div>
+<% end %>
