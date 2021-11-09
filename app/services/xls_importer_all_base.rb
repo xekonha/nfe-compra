@@ -5,9 +5,11 @@ class XlsImporterAllBase
     # imp = XlsImporterAllBase.new("/home/rainey/code/PaxecoL/nfe-compra/tmp/Projeto NFE Origem.xlsx")
   end
 
+# /home/mariocfbais/code/MarioCesarBais/nfe-compra/tmp/Nota Fiscal cpf 0464.xlsx
+
   def import
   # Registers Users
-    @chave = "1000000000"
+    @chave = 1000000000
     @chaves = {}
     @users = User.all
     x = Xsv::Workbook.open(@file_path)

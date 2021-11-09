@@ -1,9 +1,5 @@
 <p id="notice"><%= notice %></p>
 <h1>Notas Fiscais</h1>
-<h2>
-Escolher período de busca: <!-- implementar calendário com início e fim de período -->
-</h2>
-
 <table>
   <thead>
     <tr>
@@ -27,28 +23,25 @@ Escolher período de busca: <!-- implementar calendário com início e fim de pe
       <th><%=nota.chave%></th>
       <th colspan="3"></th>
     </tr>
+    <tr>
+      <th>Descrição Mercadoria Serviço</th>
+      <th>Unidade</th>
+      <th>Quantidade</th>
+      <th>Valor Unitário</th>
+      <th>Valor Total</th>
+      <th colspan="3"></th>
+    </tr>
   </thead>
 
   <tbody>
-    <% @restaurants.each do |restaurant| %>
+    <% @nota.items.each do |item| %>
       <tr>
-        <td><%= restaurant.name %></td>
-        <%#= Aqui estamos utilizando o email do usuário para demonstração %>
-        <%#= Ao inves de vermos o user_id veremos o email do user %>
-        <td><%= restaurant.user.email %></td>
-        <td><%= link_to 'Show', restaurant %></td>
-        <% if policy(restaurant).edit? %>
-          <td><%= link_to 'Edit', edit_restaurant_path(restaurant) %></td>
-        <% end %>
-        <% if policy(restaurant).destroy? %>
-          <td><%= link_to 'Destroy', restaurant, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <% end %>
+        <td><%= item.descricao %></td>
+        <td><%= item.unidade_comercial %></td>
+        <td><%= item.quantidade_comercial %></td>
+        <td><%= item.valor_unitario %></td>
+        <td><%= item.valor_total %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
-<br>
-<% if policy(Restaurant).new? %>
-  <%= link_to 'New Restaurant', new_restaurant_path %>
-<% end %>
