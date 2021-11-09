@@ -1,39 +1,61 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>NfeCompra</title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<html lang="pt-BR">
+    <head>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <title>NfeCompra</title>
+      <%= csrf_meta_tags %>
+      <%= csp_meta_tag %>
 
-    <!-- gov.br -->
-    <!-- Fonte Rawline -->
-    <link rel='stylesheet' href='https://cdn.dsgovserprodesign.estaleiro.serpro.gov.br/design-system/fonts/rawline/css/rawline.css'/>
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Fonte Raleway -->
-    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Raleway:300,400,500,600,700,800,900&amp;display=swap'/>
+      <!-- gov.br -->
+      <!-- Fonte Rawline -->
+      <link rel='stylesheet' href='https://cdn.dsgovserprodesign.estaleiro.serpro.gov.br/design-system/fonts/rawline/css/rawline.css'/>
 
-    <!-- Fonte awesome -->
-    <link rel='stylesheet' href='https://cdnjs.cloudfare.com/ajax/libs/font-awesome/5.11.2/all.min.css'/>
-    <!-- fim de gov.br -->
+      <!-- Fonte Raleway -->
+      <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Raleway:300,400,500,600,700,800,900&amp;display=swap'/>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+      <!-- Fonte awesome -->
+      <link rel='stylesheet' href='https://cdnjs.cloudfare.com/ajax/libs/font-awesome/5.11.2/all.min.css'/>
+      <!-- fim de gov.br -->
 
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>
-  </head>
+      <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
 
-  <body>
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-12 col-lg-12">
-          <!-- This div is centered and takes 10 columns -->
-          <%= render 'shared/navbar' %>
-          <%= render 'shared/flashes' %>
+      <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>
 
-          <%= yield %>
+    </head>
+    <body>
+        <div class="template-base">
+            <!-- Atalhos de Teclado aqui -->
+            <nav id="skip-links">
+              <%= render 'shared/navbar' %>
+            </nav>
+            <!-- Header aqui -->
+            <!-- Erro de javascript no header
+            <header class="br-header" id="header" data-sticky>...</header>
+             Área de conteúdo -->
+            <main id="main" class="d-flex flex-fill">
+                <!-- Define a largura da página -->
+                <div class="container-lg d-flex">
+                    <div class="row">
+                        <!-- Menu aqui erro de JS: solução comentar
+                        <div class="br-menu pt-md-3" id="main-navigation">...</div> -->
+                        <!-- Coluna do conteúdo aqui -->
+                        <div class="col pt-3 pb-5">
+                            <!-- Breadcrumbs aqui -->
+                            <div class="br-breadcrumb">...</div>
+                            <!-- Conteúdo Principal aqui -->
+                            <div id="main-content" class="main-content pl-sm-3">
+                              <%= yield %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <!-- Footer aqui -->
+            <footer id="footer" class="br-footer">
+              <%= render 'shared/flashes' %>
+            </footer>
         </div>
-      </div>
-    </div>
-  </body>
+    </body>
 </html>
