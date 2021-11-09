@@ -75,6 +75,31 @@ ActiveRecord::Schema.define(version: 2021_11_05_201413) do
     t.index ["user_id"], name: "index_pedidos_on_user_id"
   end
 
+  create_table "repo_item_nota", force: :cascade do |t|
+    t.bigint "repo_nota_id", null: false
+    t.string "descricao"
+    t.string "unidade_comercial"
+    t.decimal "quantidade_comercial"
+    t.decimal "valor_unitario"
+    t.decimal "valor_total"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["repo_nota_id"], name: "index_repo_item_nota_on_repo_nota_id"
+  end
+
+  create_table "repo_nota", force: :cascade do |t|
+    t.date "emissao"
+    t.string "cpf_destinatario"
+    t.string "nome_destinatario"
+    t.string "emitente"
+    t.string "nome_emitente"
+    t.string "descricao_cfop"
+    t.integer "numero_nota"
+    t.string "chave"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -93,4 +118,5 @@ ActiveRecord::Schema.define(version: 2021_11_05_201413) do
   add_foreign_key "item_nota", "nota", column: "nota_id"
   add_foreign_key "nota", "pedidos"
   add_foreign_key "pedidos", "users"
+  add_foreign_key "repo_item_nota", "repo_nota", column: "repo_nota_id"
 end
