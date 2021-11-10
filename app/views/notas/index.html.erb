@@ -1,10 +1,8 @@
-<p id="notice"><%= notice %></p>
-
 <h1>Notas Fiscais</h1>
 <h2>
 Escolher período de busca: <!-- implementar calendário com início e fim de período -->
 </h2>
 
 <% @notas.each do |nota| %>
-  <%= render '_nota' %>
+  <%= render 'notas/nota', nota: nota %>
 <% end %>
