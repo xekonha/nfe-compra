@@ -1,8 +1,8 @@
 class XlsImporterAllBase
   def initialize(file_path)
     @file_path = file_path
-    # @file_path = "/home/rainey/code/PaxecoL/nfe-compra/tmp/Projeto NFE Origem.xlsx"
-    # imp = XlsImporterAllBase.new("/home/rainey/code/PaxecoL/nfe-compra/tmp/Projeto NFE Origem.xlsx")
+    @file_path = "Nota Fiscal cpf 0464.xlsx"
+    imp = XlsImporterAllBase.new(@file_path)
   end
 
 # /home/mariocfbais/code/MarioCesarBais/nfe-compra/tmp/Nota Fiscal cpf 0464.xlsx
