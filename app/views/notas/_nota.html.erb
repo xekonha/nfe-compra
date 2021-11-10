@@ -1,0 +1,42 @@
+<h2>Nota Fiscal</h2>
+<table>
+  <thead>
+    <tr>
+      <th class='m-0 p-0'>Emissão</th>
+      <th class='m-0 p-0'>CNPJ Fornecedor</th>
+      <th class='m-0 p-0'>Nome do Fornecedor</th>
+      <th class='m-0 p-0'>CFOP</th>
+      <th class='m-0 p-0'>Número da Nota</th>
+    </tr>
+    <tr>
+      <th class='m-0 p-0'><%=nota.emissao%></th>
+      <th class='m-0 p-0'><%=nota.emitente%></th>
+      <th class='m-0 p-0'><%=nota.nome_emitente%></th>
+      <th class='m-0 p-0'>CFOP</th>
+      <th class='m-0 p-0'><%=nota.numero_nota%></th>
+    </tr>
+    <tr>
+      <th class='m-0 p-0'>Chave NFe:</th>
+      <th colspan="4" class='m-0 p-0'><%=nota.chave%></th>
+    </tr>
+    <tr>
+      <th class='mb-0 pb-0'>Quantidade</th>
+      <th class='mb-0 pb-0'>Unidade</th>
+      <th class='mb-0 pb-0'>Descrição Mercadoria Serviço</th>
+      <th class='mb-0 pb-0'>Valor Unitário</th>
+      <th class='mb-0 pb-0'>Valor Total</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% nota.item_notas.each do |item| %>
+      <tr>
+        <td><%= number_with_delimiter(item.quantidade_comercial, separator: ',', unit: '') %></td>
+        <td><%= item.unidade_comercial %></td>
+        <td><%= item.descricao %></td>
+        <td>R<%= number_to_currency(item.valor_unitario, separator: ',', delimiter: '.') %></td>
+        <td>R<%= number_to_currency(item.valor_total, separator: ',', delimiter: '.') %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
