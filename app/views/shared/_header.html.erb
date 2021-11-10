@@ -21,6 +21,7 @@
             <div class="br-list">
               <% if user_signed_in? %>
                 <%= link_to 'Meus Pedidos', pedidos_path, class:"br-item" %>
+                <%= link_to 'Mostrar Notas', notas_path(@notas), class:"br-item", action: :index %>
               <% end %>
             </div>
           </div>
