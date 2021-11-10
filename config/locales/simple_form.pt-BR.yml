@@ -7,6 +7,6 @@ pt-BR:
       mark: '*'
 
     error_notification:
-      default_message: "Alguns erros foram encontrados, por favor verifique:"
+      default_message: "Erro:"
 
     cpf: 'CPF'
