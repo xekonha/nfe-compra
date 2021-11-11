@@ -43,7 +43,7 @@ Pedido.all.each { |pedido|
       repo_item['nota_id'] = @nota.id #repo_item['repo_nota_id']
       repo_item.delete('repo_nota_id')
       repo_item.delete('id')
-      ItemNota.create!(repo_item)
+      ItemNota.create(repo_item)
     }
   }
 }
