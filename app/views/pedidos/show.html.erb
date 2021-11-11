@@ -1,0 +1,10 @@
+raise
+<h1>Pedidos do Contribuinte <%= User.where(cpf: current_user)[0].name%>, CPF: <%= current_user%>:</h1>
+  <% if @pedidos.where(user_id: current_user, situacao: pendente)[0].nil?  %>
+    Não há pedidos de notas. Quer tal fazer a primeira solicitação?
+    <br>
+    <% link_to 'Pedir notas', new_pedido_path %>
+  <% else %>
+    <%= @pedidos.where(user_id: current_user, situacao: pendente).each do |pedido| %>
+      <p>Pedido em <%= pedido. %>:<%= Início: pedido.periodo_inicial %><%= Final: pedido.periodo_final %></p>
+  <% end %>
