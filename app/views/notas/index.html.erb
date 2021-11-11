@@ -1,18 +1,7 @@
 <h1>Notas Fiscais</h1>
 <div class="br-table" data-search data-selection>
-  <!-- Header da Tabela -->
-  <div class="table-header">
-    <!-- Barra de Título -->
-    <div class="top-bar"></div>
-    <!-- Barra de Busca -->
-    <div class="search-bar"></div>
-    <!-- Barra de Seleção -->
-    </div>
-    <div class="selected-bar"></div>
   <!-- Tabela de dados -->
     <% @notas.each do |nota| %>
       <%= render 'notas/nota', nota: nota %>
     <% end %>
-  <!-- Rodapé da Tabela -->
-  <div class="table-footer"></div>
 </div>
