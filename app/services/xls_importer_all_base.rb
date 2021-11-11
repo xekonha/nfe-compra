@@ -1,11 +1,7 @@
 class XlsImporterAllBase
   def initialize(file_path)
     @file_path = file_path
-    @file_path = "Nota Fiscal cpf 0464.xlsx"
-    imp = XlsImporterAllBase.new(@file_path)
   end
-
-# /home/mariocfbais/code/MarioCesarBais/nfe-compra/tmp/Nota Fiscal cpf 0464.xlsx
 
   def import
   # Registers Users
@@ -14,7 +10,7 @@ class XlsImporterAllBase
     @users = User.all
     x = Xsv::Workbook.open(@file_path)
     sheet = x.sheets[0]
-    sheet.row_skip = 1
+    sheet.row_skip = 99000
     sheet.each_row do |row|
       # Dados da nota sem mercadorias (itens)
       nota = RepoNota.new
@@ -59,14 +55,13 @@ class XlsImporterAllBase
 
   def unknown
     # NOT registers users
-    # "/home/rainey/code/PaxecoL/nfe-compra/tmp/Nota Fiscal cpf xxxx.xlsx"
     @chave = 0
     @chaves = {}
     cpfs = {}
     nomes = {}
     x = Xsv::Workbook.open(@file_path)
     sheet = x.sheets[0]
-    sheet.row_skip = 1
+    sheet.row_skip = 99000
     sheet.each_row do |row|
       # Dados da nota sem mercadorias (itens)
       nota = RepoNota.new
@@ -76,9 +71,6 @@ class XlsImporterAllBase
       end
       nota.cpf_destinatario = row[1].gsub(/\D/, '')
       nota.nome_destinatario = row[2]
-      # Faker::Name.first_name       #=> "Kaci"
-      # Faker::Name.middle_name      #=> "Abraham"
-      # Faker::Name.last_name        #=> "Ernser"
       if cpfs.keys.include?(nota.cpf_destinatario)
         nota.nome_destinatario = nomes[nota.cpf_destinatario]
         nota.cpf_destinatario = cpfs[nota.cpf_destinatario]
