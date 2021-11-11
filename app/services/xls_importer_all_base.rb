@@ -149,4 +149,37 @@ class XlsImporterAllBase
       item.save!
     end
   end
+
+  def mesmos_no_repo
+    repetidas = {}
+    RepoNota.all.each do |nota|
+      if !repetidas.key?(nota.numero_nota) && !RepoNota.where(numero_nota: nota.numero_nota).count == 1
+        repetidas[nota.numero_nota] = []
+        RepoNota.where(numero_nota: nota.numero_nota).each { |reponota| repetidas[nota.numero_nota] << reponota.nome_emitente }
+      end
+    end
+    repetidas.each_key do |reponota|
+      p "--> REPETIDAS: #{reponota.numero_nota}: -->/n"
+      repetidas[reponota.numero_nota].each do |emitente|
+        p "#{emitente.nome_emitente}"
+      end
+    end
+  end
+
+  def mesmas_notas
+    repetidas = {}
+    Nota.all.each do |nota|
+      if !repetidas.key?(nota.numero_nota) && !Nota.where(numero_nota: nota.numero_nota).count == 1
+        repetidas[nota.numero_nota] = []
+        Nota.where(numero_nota: nota.numero_nota).each { |reponota| repetidas[nota.numero_nota] << reponota.nome_emitente }
+      end
+    end
+    repetidas.each_key do |reponota|
+      p "--> REPETIDAS: #{reponota.numero_nota}: -->/n"
+      repetidas[reponota.numero_nota].each do |emitente|
+        p "#{emitente.nome_emitente}"
+      end
+    end
+  end
+
 end
