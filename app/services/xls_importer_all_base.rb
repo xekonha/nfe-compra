@@ -3,9 +3,48 @@ class XlsImporterAllBase
     @file_path = file_path
   end
 
+  def cfop
+    # cfop = XlsImporterAllBase.new("/home/rainey/code/PaxecoL/nfe-compra/tmp/CFOP.xlsx")
+    cfops = {}
+    cfop_dados = {}
+    x = Xsv::Workbook.open(@file_path)
+    sheet = x.sheets[0]
+    sheet.row_skip = 1
+    sheet.each_row do |row|
+      # CFOP -> Descricao
+      cfop_number = row[0]
+      if cfop_number.nil?
+        break
+      end
+      cfop_descricao = row[1]
+      cfop_descricao = I18n.transliterate(cfop_descricao.titleize.gsub(" ", "_"))
+      cfops[cfop_descricao] = [] unless cfops.key?(cfop_descricao)
+      cfops[cfop_descricao] << cfop_number
+      cfop_dados[:cfop_descricao] = {}
+      cfop_dados[:cfop_descricao]['remessa'] = row[2]
+      cfop_dados[:cfop_descricao]['exportacao'] = row[3]
+      cfop_dados[:cfop_descricao]['importacao'] = row[4]
+      cfop_dados[:cfop_descricao]['compra'] = row[5]
+      cfop_dados[:cfop_descricao]['RB'] = row[6]
+      cfop_dados[:cfop_descricao]['devolucao'] = row[7]
+      cfop_dados[:cfop_descricao]['retorno'] = row[8]
+      cfop_dados[:cfop_descricao]['anula_vlr'] = row[9]
+    end
+    reponotas = RepoNota.all
+    cfops_coincidentes = []
+    reponotas.each do |reponota|
+      descricao = I18n.transliterate(reponota.descricao_cfop.titleize.gsub(" ", "_"))
+      if cfops.key?(descricao)
+        cfops_coincidentes << reponota if cfops[descricao].length > 1
+      else
+        binding.pry
+      end
+    end
+  end
+
   def import
   # Registers Users
-    @chave = 1000000000
+    @chave = 100000
     @chaves = {}
     @users = User.all
     x = Xsv::Workbook.open(@file_path)

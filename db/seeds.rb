@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 # # Inicializa 1.000 Reponotas (sheet.row_skip = 99000)
 xls = XlsImporterAllBase.new("db/Nota Fiscal cpf 0464.xlsx")
 xls.unknown
@@ -48,3 +49,24 @@ Pedido.all.each { |pedido|
   }
 }
 puts "Concluídas Notas e Itens"
+=======
+puts 'INICIO'
+# Quantidade maior de notas: RepoNota.group(:cpf_destinatario).count.sort_by {|key, value| value}[-5..-1]
+Pedido.where(situacao: 'pendente').each do |ask|
+    contr = User.find(ask.user_id)
+    notas = RepoNota.where({cpf_destinatario: contr.cpf, emissao: (ask.periodo_inicial..ask.periodo_final)})
+    puts 'lOOp'
+    x = gets.chomp
+    # unless notas.nil?
+    notas.each do |nota|
+      nota_pedido = Nota.new
+      nota_pedido = nota.attributes
+      p "attributes = #{nota.attributes}"
+      p "Pedido.id =  #{nota.attributes}"
+      puts '-------------------------------'
+      x = getschomp()
+      nota_pedido.pedido_id = ask.id
+      nota_pedido.save!
+    end
+end
+>>>>>>> Stashed changes
