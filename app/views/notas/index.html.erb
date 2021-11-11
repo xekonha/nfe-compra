@@ -7,6 +7,40 @@
     <!-- Barra de Busca -->
     <div class="search-bar"></div>
     <!-- Barra de Seleção -->
+    <div data-controller="nota">
+      <%= simple_form_for(@notas) do |f| %>
+      <%= f.error_notification %>
+      <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+      <div class="form-inputs m-1">
+        <%= f.input :periodo_inicial, as: :date, html5: true, label: "Período Inicial",
+          input_html: {data: {'nota-target': 'periodoInicial'}, onkeydown: "return false" } %>
+        <%= f.input :periodo_final, as: :date, html5: true, label: "Período Final",
+          input_html: {data: {'nota-target': 'periodoFinal'}, onkeydown: "return false" }  %>
+      </div>
+    <div id="periodoInvalido" class="invalid-feedback m-3">Favor verificar as datas informadas.</div>
+      <button type="button" class="br-button primary ml-sm-2" data-action="click->nota#index">Pesquisar</button>
+      <div class="br-modal-footer justify-content-center">
+        <%= f.button :submit, 'Pesquisar', class: "br-button primary small m-2" %>
+      </div>
+    <!-- <div class="br-modal" data-controller="modal" data-pedido-target="modal">
+      <div class="container-fluid p-1 p-sm-4">
+        <div>
+          <p>
+            Favor confirmar o período de solicitação de suas notas fiscais. <br>
+            Essa ação não pode ser desfeita. <br> <br>
+            Período inicial: <strong data-modal-target="inicio"> </strong>  <br>
+            Período final: <strong data-modal-target="fim"> </strong>
+          </p>
+        </div>
+        <div class="br-modal-footer justify-content-center">
+          <button class="br-button secondary small m-2" type="button" data-action="click->modal#close">Fechar
+          </button>
+          <%= f.button :submit, 'Salvar', class: "br-button primary small m-2" %>
+        </div>
+      </div>
+    </div> -->
+      <% end %>
+    </div>
     <div class="selected-bar"></div>
   <!-- Tabela de dados -->
     <% @notas.each do |nota| %>
