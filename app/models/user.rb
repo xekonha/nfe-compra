@@ -11,18 +11,4 @@ class User < ApplicationRecord
   validates :cpf, uniqueness: true, cpf: true
   validates :email, presence: true, email: true
 
-  # https://stackoverflow.com/questions/7097921/devise-how-to-change-setting-so-that-email-addresses-dont-need-to-be-unique
-  def email_required?
-    false
-  end
-
-  def email_changed?
-    false
-  end
-
-  # For ActiveRecord 5.1+
-  def will_save_change_to_email?
-    false
-  end
-
 end
