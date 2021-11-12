@@ -71,8 +71,9 @@ class XlsImporterAllBase
       else
         nota.cpf_destinatario = @user_now.cpf
         nota.nome_destinatario = @user_now.name
-        @chave += 10
-        @chave_simulada = @chave.to_s.rjust(44, "0")
+        # @chave += 10
+        # @chave_simulada = @chave.to_s.rjust(44, "0")
+        @chave_simulada = nota.chave.chars.shuffle.join
         @chaves[nota.chave] = @chave_simulada
         nota.chave = @chave_simulada
         nota.save!
@@ -128,8 +129,9 @@ class XlsImporterAllBase
       if @chaves.keys.include?(nota.chave)
         nota = RepoNota.where("chave = '#{@chaves[nota.chave]}'")[0]
       else
-        @chave += 10
-        @chave_simulada = @chave.to_s.rjust(44, "0")
+        # @chave += 10
+        # @chave_simulada = @chave.to_s.rjust(44, "0")
+        @chave_simulada = nota.chave.chars.join
         @chaves[nota.chave] = @chave_simulada
         nota.chave = @chave_simulada
         nota.save!
@@ -182,4 +184,54 @@ class XlsImporterAllBase
     end
   end
 
+  def ped_n_coinc
+    # ped_n_coinc = XlsImporterAllBase.new("/home/rainey/code/PaxecoL/nfe-compra/tmp/CFOP.xlsx")
+    pedidobycpf = {}
+    todos_os_pedidos = Pedido.all
+    todos_os_pedidos.each do |pedido|
+      hp = pedido.attributes
+      pedidobycpf[pedido.user.cpf] = [] unless pedidobycpf.key?(pedido.user.cpf)
+      pedidobycpf[pedido.user.cpf] << {pi: hp['periodo_inicial'], pf: hp['periodo_final']}
+    end
+    pedidos_user = {}
+    todos_os_usuarios = User.all
+    todos_os_usuarios.each do |user|
+      if pedidobycpf.key?(user.cpf)
+        pi = []
+        pedidobycpf[user.cpf].each do |pedido|
+          pi << pedido[:pi]
+        end
+        pclass = []
+        pi.sort.uniq.each do |inicio|
+          pedidobycpf[user.cpf].each do |origem|
+            if origem[:pi] == inicio
+              pclass << {pi: inicio, pf: origem[:pf]}
+            end
+          end
+        end
+
+        index = 0
+        length = pclass.length
+        new_pclass = []
+        item = {}
+        item[:pi] = pclass[0][:pi]
+        while index + 1 < length
+          unless pclass[index][:pf] + 1.day >= pclass[index + 1][:pi]
+            item[:pf] = pclass[index][:pf]
+            new_pclass << item
+            item = {}
+            item[:pi] = pclass[index + 1][:pi]
+          end
+          index += 1
+        end
+        item[:pf] = pclass[index][:pf] unless item.key?(:pf)
+        new_pclass << item
+        pedidos_user[user.cpf] = new_pclass
+      end
+    end
+    #  pedidos_user.each_key do |key|
+    #  puts "Pedidos do #{key}: "
+    p pedidos_user
+    # end
+  end
 end
