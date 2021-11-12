@@ -4,8 +4,7 @@
       <div class="header-menu justify-content-between">
         <div class="menu-left d-flex align-items-center">
           <div class="header-menu-trigger">
-            <button class="br-button small circle" type="button" aria-label="Menu" data-toggle="menu" data-target="#main-navigation" id="menu-compact">
-              <i class="fas fa-bars" aria-hidden="true"></i>
+            <button class="br-button small" type="button" data-target="#main-navigation">
             </button>
           </div>
           <%= link_to "/", class: "navbar-brand" do %>
@@ -20,8 +19,8 @@
             </button>
             <div class="br-list">
               <% if user_signed_in? %>
-                <%= link_to 'Meus Pedidos', pedidos_path, class:"br-item" %>
-                <%= link_to 'Mostrar Notas', notas_path(@notas), class:"br-item", action: :index %>
+                <%= link_to 'Pedidos', pedidos_path, class:"br-item" %>
+                <%= link_to 'Notas', notas_path, class:"br-item", action: :index %>
               <% end %>
             </div>
           </div>
@@ -49,12 +48,9 @@
               <% end %>
               </div>
               <div class="header-sign-in">
-              <% unless user_signed_in? %>
-                <%= button_to "Entrar", new_user_session_path, method: :get, data: { trigger: "login" }, class: "br-button sign-in small" %>
-              <% end %>
-                <%# <button class="br-button sign-in small" type="button" data-trigger= "login"  >
-                  <i class="fas fa-user" aria-hidden="true"></i><span class="d-sm-inline">Entrar</span>
-                </button> %>
+                <% unless user_signed_in? %>
+                  <%= button_to "Entrar", new_user_session_path, method: :get, data: { trigger: "login" }, class: "br-button sign-in small" %>
+                <% end %>
               </div>
           </div>
         </div>
@@ -62,3 +58,4 @@
     </div>
   </div>
 </header>
+<%= javascript_pack_tag 'import_gov' %>
