@@ -1,0 +1,23 @@
+<h2>Pedidos Efetuados</h2>
+<table>
+  <thead>
+    <tr>
+      <th class='m-0 pb-0'>Data do Pedido</th>
+      <th class='m-0 pb-0'>DE</th>
+      <th class='m-0 pb-0'>A</th>
+      <!-- Situações possíveis: 'pendente', 'disponível' e 'concluída' -->
+      <th class='m-0 pb-0'>SITUAÇÃO</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @pedidos.where(user_id: current_user.id).each do |pedido| %>
+      <tr>
+        <td><%= pedido.data_pedido.strftime('%d/%B/%Y') %></td>
+        <td><%= pedido.periodo_inicial %></td>
+        <td><%= pedido.periodo_final %>
+        <td><%= pedido.situacao %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

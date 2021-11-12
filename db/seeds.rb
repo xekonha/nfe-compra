@@ -48,3 +48,4 @@ Pedido.all.each { |pedido|
   }
 }
 puts "Concluídas Notas e Itens"
+xls.ped_n_coinc

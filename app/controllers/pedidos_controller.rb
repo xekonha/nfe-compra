@@ -1,6 +1,5 @@
 class PedidosController < ApplicationController
-
-
+  
   def index
     @pedido = Pedido.new
     @pedidos = Pedido.where(user: current_user)
