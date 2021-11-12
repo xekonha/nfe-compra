@@ -1,1 +1,18 @@
 // Specific CSS for your home-page
+.banner-home {
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+                     image-url('leo.jpg');
+  background-size: cover;
+  color: whitesmoke;
+  text-shadow: 1px 1px 2px black;
+  background-repeat: no-repeat;
+  height: 70vh;
+}
+
+.banner-home a {
+  color: lightskyblue;
+}
+
+#destaque {
+  padding: 5px;
+}

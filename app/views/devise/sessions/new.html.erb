@@ -1,3 +1,4 @@
+<div class="container">
 <h2>Entrar</h2>
 
 <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
@@ -13,9 +14,10 @@
     <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
   </div>
 
-  <div class="form-actions">
+  <div class="form-actions btn btn-primary btn-lg rounded active">
     <%= f.button :submit, "Entrar" %>
   </div>
 <% end %>
 
 <%= render "devise/shared/links" %>
+</div>

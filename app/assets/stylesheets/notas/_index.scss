@@ -1,0 +1,8 @@
+// Import page-specific CSS files here.
+@import 'notas';
+
+.fas {
+  color: #1351b4;
+}
+#mainTable.tableFixHead { overflow: auto; height: 100px; }
+.mTable { position: sticky; top: 0; z-index: 1; }

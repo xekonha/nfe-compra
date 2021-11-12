@@ -23,10 +23,8 @@ require("channels")
 // ----------------------------------------------------
 
 // External imports
-// import "bootstrap";
+import "bootstrap";
 
-// gov.br
-import "@govbr/dsgov/dist/dsgov";
 import "controllers";
 
 // Internal imports, e.g:

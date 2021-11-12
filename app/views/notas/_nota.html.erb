@@ -1,18 +1,15 @@
-<h2>Nota Fiscal</h2>
-<table>
+<table class='my-3'>
   <thead>
     <tr>
       <th class='m-0 p-0'>Emissão</th>
       <th class='m-0 p-0'>CNPJ Fornecedor</th>
-      <th class='m-0 p-0'>Nome do Fornecedor</th>
-      <th class='m-0 p-0'>CFOP</th>
+      <th colspan="2" class='m-0 p-0'>Nome do Fornecedor</th>
       <th class='m-0 p-0'>Número da Nota</th>
     </tr>
     <tr>
       <th class='m-0 p-0'><%=nota.emissao%></th>
       <th class='m-0 p-0'><%=nota.emitente%></th>
-      <th class='m-0 p-0'><%=nota.nome_emitente%></th>
-      <th class='m-0 p-0'>CFOP</th>
+      <th colspan="2" class='m-0 p-0'><%=nota.nome_emitente%></th>
       <th class='m-0 p-0'><%=nota.numero_nota%></th>
     </tr>
     <tr>
