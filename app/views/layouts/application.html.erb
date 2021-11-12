@@ -20,16 +20,8 @@
       <%= render 'shared/header' %>
       <!-- Área de conteúdo -->
       <main id="main">
-        <div>
-          <div class="row">
-            <!-- Coluna do conteúdo aqui -->
-            <div class="col">
-              <!-- Conteúdo Principal aqui -->
-              <div id="main-content" class="main-content">
-                <%= yield %>
-              </div>
-            </div>
-          </div>
+        <div id="main-content" class="main-content">
+          <%= yield %>
         </div>
       </main>
       <!-- Footer aqui -->
