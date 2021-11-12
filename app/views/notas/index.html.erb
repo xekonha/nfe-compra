@@ -1,7 +1,75 @@
-<h1>Notas Fiscais</h1>
-<div class="br-table" data-search data-selection>
-  <!-- Tabela de dados -->
-    <% @notas.each do |nota| %>
-      <%= render 'notas/nota', nota: nota %>
-    <% end %>
+<div class="container-lg d-flex pt-3" data-controller="nota">
+  <div class="br-table" data-search="data-search" data-selection="data-selection" data-collapse="data-collapse">
+    <div class="table-header">
+      <div class="top-bar">
+        <div class="table-title">Notas Fiscais</div>
+        <div class="search-trigger">
+          <button class="br-button circle" type="button" data-toggle="search" aria-label="Abrir busca"><i class="fas fa-search" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <div class="search-bar">
+        <div class="br-input">
+          <label for="table-searchbox-62224">Buscar</label>
+          <input id="table-searchbox-62224" type="text" placeholder="Buscar na tabela"/>
+          <button class="br-button circle" type="button" aria-label="Buscar"><i class="fas fa-search" aria-hidden="true"></i>
+          </button>
+        </div>
+        <button class="br-button circle" type="button" data-dismiss="search" aria-label="Fechar busca"><i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <table class="table table-bordered" style="border-collapse:collapse;">
+      <caption>Nota Fiscal</caption>
+      <thead class="">
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">Emissão</th>
+          <th scope="col">CNPJ Fornecedor</th>
+          <th scope="col">Nome do Fornecedor</th>
+          <th scope="col">CFOP</th>
+          <th scope="col">Valor Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @notas.each do |nota| %>
+          <tr style="cursor: pointer;" data-toggle="collapse" data-target="#accordion-<%=nota.id%>" data-action="click->nota#toggleAccordion"
+            class="accordion" aria-expanded="false">
+            <td><i class="fas fa-chevron-down d-flex" data-nota-target="chevron"></i></td>
+            <td data-th="Emissão"><%=nota.emissao%></td>
+            <td data-th="CNPJ Fornecedor"><%=nota.emitente%></td>
+            <td data-th="Nome do Fornecedor"><%=nota.nome_emitente%></td>
+            <td data-th="CFOP"><%=nota.descricao_cfop%></td>
+            <td data-th="Valor Total">R$ <%= number_to_currency(@totais[nota.id], unit: '', separator: ',', delimiter: '.') %></td>
+          </tr>
+          <tr>
+            <td class="collapse" colspan="6" id="accordion-<%=nota.id%>">
+              <table class="table">
+                <tbody>
+                  <thead class="">
+                    <tr>
+                      <th scope="col">Quantidade</th>
+                      <th scope="col">Unidade</th>
+                      <th scope="col">Descrição</th>
+                      <th scope="col">Valor Unitário</th>
+                      <th scope="col">Valor Total do Item</th>
+                    </tr>
+                  </thead>
+                  <% nota.item_notas.each do |item| %>
+                    <tr>
+                      <td><%= number_with_delimiter(item.quantidade_comercial, separator: ',', unit: '') %></td>
+                      <td><%= item.unidade_comercial %></td>
+                      <td><%= item.descricao %></td>
+                      <td>R<%= number_to_currency(item.valor_unitario, separator: ',', delimiter: '.') %></td>
+                      <td>R<%= number_to_currency(item.valor_total, separator: ',', delimiter: '.') %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>

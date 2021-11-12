@@ -10,8 +10,9 @@
 
 // Your CSS partials
 @import "components/index";
-@import "pages/index";
+@import "pages/home";
 @import "pedidos/form";
+@import "notas/index";
 
 // gov.br
 @import "@govbr/dsgov/dist/dsgov";
