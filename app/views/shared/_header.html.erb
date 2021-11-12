@@ -30,7 +30,7 @@
               <div class="header-avatar">
               <% if user_signed_in? %>
                 <div class="avatar dropdown">
-                  <span class="br-avatar" title="Fulana da Silva">
+                  <span class="br-avatar" title=<%= current_user.name%>>
                     <span class="image"><img src="<%= image_url('https://thispersondoesnotexist.com/image') %>" alt="Avatar"/></span>
                   </span>
                   <button class="br-button circle small" type="button" aria-label="Abrir Menu de usuário" data-toggle="dropdown">
@@ -39,7 +39,7 @@
                   <div id="notification" class="br-notification">
                     <div class="notification-header">
                       <div class="row justify-content-between">
-                        <div><span class="text-bold">Lucas Pacheco Lopes</span><br/><small>011.592.261-05</small></div>
+                        <div><span class="text-bold"> <%= current_user.name%></span><br/><small> CPF: <%= current_user.cpf %> </small></div>
                         <%= link_to "Sair", destroy_user_session_path, method: :delete %>
                       </div>
                     </div>
