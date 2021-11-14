@@ -3,6 +3,20 @@ class XlsImporterAllBase
     @file_path = file_path
   end
 
+  def qtd_nota_mercadorias
+    qtd_itens = {}
+    rn = RepoNota.all
+    irn = RepoNotaItem.all
+    rn.each do |reponota|
+      qtd_itens[reponota.id] = irn.where(repo_nota_id: reponota.id).count
+    end
+    qtd_itens.keys.each do |key|
+      if qtd_itens[key] > 1
+        puts "id:#{key} - #{qtd_itens[key]}"
+      end
+    end
+  end
+
   def cfop
     # cfop = XlsImporterAllBase.new("/home/rainey/code/PaxecoL/nfe-compra/tmp/CFOP.xlsx")
     cfops = {}
@@ -189,49 +203,75 @@ class XlsImporterAllBase
     pedidobycpf = {}
     todos_os_pedidos = Pedido.all
     todos_os_pedidos.each do |pedido|
-      hp = pedido.attributes
-      pedidobycpf[pedido.user.cpf] = [] unless pedidobycpf.key?(pedido.user.cpf)
-      pedidobycpf[pedido.user.cpf] << {pi: hp['periodo_inicial'], pf: hp['periodo_final']}
+      pedidobycpf[pedido.user.cpf] = {} unless pedidobycpf.key?(pedido.user.cpf)
+      pedidobycpf[pedido.user.cpf][pedido.situacao] = [] unless pedidobycpf[pedido.user.cpf].key?(pedido.situacao)
+      pedidobycpf[pedido.user.cpf][pedido.situacao] << { pi: pedido.periodo_inicial, pf: pedido.periodo_final }
     end
     pedidos_user = {}
     todos_os_usuarios = User.all
     todos_os_usuarios.each do |user|
-      if pedidobycpf.key?(user.cpf)
-        pi = []
-        pedidobycpf[user.cpf].each do |pedido|
-          pi << pedido[:pi]
-        end
-        pclass = []
-        pi.sort.uniq.each do |inicio|
-          pedidobycpf[user.cpf].each do |origem|
-            if origem[:pi] == inicio
-              pclass << {pi: inicio, pf: origem[:pf]}
+      ['pendente', 'disponível', 'concluída'].each do |situacao|
+        if pedidobycpf.key?(user.cpf) && pedidobycpf[user.cpf].key?(situacao)
+          pi = []
+          pedidobycpf[user.cpf][situacao].each do |pedido|
+            pi << pedido[:pi]
+          end
+          pclass = []
+          pi.sort.uniq.each do |inicio|
+            pedidobycpf[user.cpf][situacao].each do |origem|
+              if origem[:pi] == inicio
+                pclass << {pi: inicio, pf: origem[:pf]}
+              end
             end
           end
-        end
 
-        index = 0
-        length = pclass.length
-        new_pclass = []
-        item = {}
-        item[:pi] = pclass[0][:pi]
-        while index + 1 < length
-          unless pclass[index][:pf] + 1.day >= pclass[index + 1][:pi]
-            item[:pf] = pclass[index][:pf]
-            new_pclass << item
-            item = {}
-            item[:pi] = pclass[index + 1][:pi]
+          pedidos_user[user.cpf] = {} unless pedidos_user.key?(user.cpf)
+          pedidos_user[user.cpf][situacao] = [] unless pedidos_user[user.cpf].key?(situacao)
+          index = 0
+          length = pclass.length
+          new_pclass = []
+          item = {}
+          item[:pi] = pclass[0][:pi]
+          item[:pf] = pclass[0][:pf]
+          while index + 1 < length
+            if item[:pf] < pclass[index + 1][:pf] && item[:pf] + 1.day >= pclass[index + 1][:pi]
+              item[:pf] = pclass[index + 1][:pf]
+            elsif item[:pf]  < pclass[index + 1][:pi]
+              new_pclass << item
+              item = {}
+              item[:pi] = pclass[index + 1][:pi]
+              item[:pf] = pclass[index + 1][:pf]
+            end
+            index += 1
           end
-          index += 1
+          item[:pf] = pclass[index][:pf] unless item.key?(:pf)
+          new_pclass << item
+          pedidos_user[user.cpf][situacao] = new_pclass
         end
-        item[:pf] = pclass[index][:pf] unless item.key?(:pf)
-        new_pclass << item
-        pedidos_user[user.cpf] = new_pclass
       end
     end
-    #  pedidos_user.each_key do |key|
-    #  puts "Pedidos do #{key}: "
     p pedidos_user
-    # end
+  end
+
+  def pedidos
+    users = User.all
+    pu = {}
+    users.each do |u|
+      pu[u.id] = {} unless pu.key?(u.id)
+      pedidos = Pedido.where(user_id: u.id)
+      pedidos.each do |ped|
+        pu[u.id][ped.situacao] = [] unless pu[u.id].key?(ped.situacao)
+        pu[u.id][ped.situacao] << [ped.periodo_inicial, ped.periodo_final]
+      end
+    end
+    todos_os_pedidos = {}
+    users.each do |u|
+      pu[u.id].each_key do |situacao|
+        todos_os_pedidos[u.cpf] = {} unless todos_os_pedidos.key?(u.cpf)
+        todos_os_pedidos[u.cpf][situacao] = [] unless todos_os_pedidos[u.cpf].key?(situacao)
+        todos_os_pedidos[u.cpf][situacao] << pu[u.id][situacao]
+      end
+    end
+    p todos_os_pedidos
   end
 end
