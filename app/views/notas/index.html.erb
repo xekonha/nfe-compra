@@ -54,7 +54,7 @@
                 <span id="custom-tooltip">Copiado!</span>
               </span>
             </td>
-            <td data-th="Valor Total">R$ <%= number_to_currency(@totais[nota.id], unit: '', separator: ',', delimiter: '.') %></td>
+            <td class="text-right" data-th="Valor Total">R$ <%= number_to_currency(@totais[nota.id], unit: '', separator: ',', delimiter: '.') %></td>
           </tr>
           <tr>
             <td class="collapse" colspan="6" id="accordion-<%=nota.id%>">
@@ -71,11 +71,11 @@
                   </thead>
                   <% nota.item_notas.each do |item| %>
                     <tr>
-                      <td><%= number_with_delimiter(item.quantidade_comercial, separator: ',', unit: '') %></td>
-                      <td><%= item.unidade_comercial %></td>
+                      <td class="text-right"><%= number_with_delimiter(item.quantidade_comercial, separator: ',', unit: '') %></td>
+                      <td class="text-center"><%= item.unidade_comercial %></td>
                       <td><%= item.descricao %></td>
-                      <td>R$ <%= number_to_currency(item.valor_unitario, separator: ',', delimiter: '.', unit: '') %></td>
-                      <td>R$ <%= number_to_currency(item.valor_total, separator: ',', delimiter: '.', unit: '') %></td>
+                      <td class="text-right">R$ <%= number_to_currency(item.valor_unitario, separator: ',', delimiter: '.', unit: '') %></td>
+                      <td class="text-right">R$ <%= number_to_currency(item.valor_total, separator: ',', delimiter: '.', unit: '') %></td>
                     </tr>
                   <% end %>
                 </tbody>
