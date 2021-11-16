@@ -1,8 +1,8 @@
 class PedidosController < ApplicationController
-  
+
   def index
     @pedido = Pedido.new
-    @pedidos = Pedido.where(user: current_user)
+    @pedidos = Pedido.where(user: current_user).order("data_pedido ASC")
   end
 
   def create

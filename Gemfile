@@ -32,6 +32,7 @@ gem 'devise'
 gem 'devise-i18n'
 gem 'xsv'
 gem 'stimulus-rails'
+gem 'pg_search'
 
 gem 'autoprefixer-rails', '10.2.5'
 gem 'font-awesome-sass'
