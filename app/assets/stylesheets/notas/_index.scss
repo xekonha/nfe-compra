@@ -1,8 +1,20 @@
-// Import page-specific CSS files here.
-@import 'notas';
-
-.fas {
+.fas, .far {
   color: #1351b4;
 }
-#mainTable.tableFixHead { overflow: auto; height: 100px; }
-.mTable { position: sticky; top: 0; z-index: 1; }
+
+#clipboard {
+  cursor: pointer;
+  position: relative;
+  z-index: 1000;
+}
+
+#custom-tooltip {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: -25px;
+  padding: 5px 12px;
+  background-color: #1351b4;
+  border-radius: 4px;
+  color: #fff;
+}
