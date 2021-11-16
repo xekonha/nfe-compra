@@ -1,9 +1,10 @@
 class NotasController < ApplicationController
-  # before_action :authenticate_user!
   def index
     @notas = Nota.where(cpf_destinatario: current_user.cpf)
+    if params[:query].present?
+      @notas = Nota.search_by_supplier(params[:query])
+    end
     @totais = totalizar(@notas);
-    puts "TOTAIS: #{@totais}"
   end
 
   private

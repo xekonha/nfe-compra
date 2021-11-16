@@ -1,25 +1,34 @@
-<div class="container-lg d-flex pt-3" data-controller="nota">
+<div class="container-lg pt-3" data-controller="nota">
   <div class="br-table" data-search="data-search" data-selection="data-selection" data-collapse="data-collapse">
-    <div class="table-header">
+    <div class="table-header" data-nota-target="tableHeader">
       <div class="top-bar">
         <div class="table-title">Notas Fiscais</div>
         <div class="search-trigger">
-          <button class="br-button circle" type="button" data-toggle="search" aria-label="Abrir busca"><i class="fas fa-search" aria-hidden="true"></i>
+          <button class="br-button circle" type="button" data-toggle="search" aria-label="Abrir busca" data-action="click->nota#toggleSearch">
+            <i class="fas fa-search" aria-hidden="true"></i>
           </button>
         </div>
       </div>
-      <div class="search-bar">
-        <div class="br-input">
-          <label for="table-searchbox-62224">Buscar</label>
-          <input id="table-searchbox-62224" type="text" placeholder="Buscar na tabela"/>
-          <button class="br-button circle" type="button" aria-label="Buscar"><i class="far fa-clipboard"></i></i>
-          </button>
-        </div>
-        <button class="br-button circle" type="button" data-dismiss="search" aria-label="Fechar busca"><i class="fas fa-times" aria-hidden="true"></i>
+      <div class="search-bar" data-nota-target="searchBar">
+        <%= form_tag(notas_path, {method: :get, class: 'br-input'}) do %>
+          <%= text_field_tag :query,
+          params[:query],
+          class: "form-control",
+          placeholder: "Buscar nome do fornecedor ou item da nota",
+          data: {'nota-target': 'searchInput' }
+          %>
+          <%= button_tag(type: "submit", class: "br-button circle", name: nil) do %>
+            <i class="fas fa-search"></i>
+          <% end %>
+          <%# <input id="table-searchbox" type="text" placeholder="Buscar nome fornecedor ou item da nota" data-nota-target="searchInput" />
+          <button class="br-button circle" type="button" aria-label="Buscar"><i class="fas fa-search"></i></button> %>
+        <% end %>
+        <button class="br-button circle" type="button" data-dismiss="search" aria-label="Fechar busca" data-action="click->nota#untoggleSearch">
+          <i class="fas fa-times" aria-hidden="true"></i>
         </button>
       </div>
     </div>
-    <table id="mainTable" class="table table-bordered tableFixHead" style="border-collapse:collapse;">
+    <table id="mainTable" class="table table-bordered" style="border-collapse:collapse;">
       <caption>Nota Fiscal</caption>
       <thead class="mTable">
         <tr>
@@ -32,14 +41,19 @@
         </tr>
       </thead>
       <tbody>
-        <% @notas.each do |nota| %>
-          <tr style="cursor: pointer;" data-toggle="collapse" data-target="#accordion-<%=nota.id%>"
-            class="accordion" aria-expanded="false">
+        <% if @notas.each do |nota| %>
+          <tr data-toggle="collapse" data-target="#accordion-<%=nota.id%>"
+            class="accordion" aria-expanded="false" style="cursor: pointer;">
             <td><i class="fas fa-chevron-down d-flex" data-nota-target="chevron"></i></td>
             <td data-th="Emissão"><%=nota.emissao%></td>
             <td data-th="CNPJ Fornecedor"><%=nota.emitente%></td>
             <td data-th="Nome do Fornecedor"><%=nota.nome_emitente%></td>
-            <td data-th="Chave"><%=nota.chave%> <i class="far fa-clipboard"></i></td>
+            <td data-th="Chave" data-nota-target="clipboard"> <%=nota.chave%>
+              <span id="clipboard" data-action="click->nota#copy" data-toggle="tooltip" title="Copiar p/ clipboard">
+                <i class="far fa-clipboard"></i>
+                <span id="custom-tooltip">Copiado!</span>
+              </span>
+            </td>
             <td data-th="Valor Total">R$ <%= number_to_currency(@totais[nota.id], unit: '', separator: ',', delimiter: '.') %></td>
           </tr>
           <tr>
@@ -68,8 +82,10 @@
               </table>
             </td>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
+        <% end.empty? %>
+        <tr> <td colspan="6">Nenhuma nota encontrada.</td> </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 </div>
