@@ -12,7 +12,7 @@
         <div class="br-input">
           <label for="table-searchbox-62224">Buscar</label>
           <input id="table-searchbox-62224" type="text" placeholder="Buscar na tabela"/>
-          <button class="br-button circle" type="button" aria-label="Buscar"><i class="fas fa-search" aria-hidden="true"></i>
+          <button class="br-button circle" type="button" aria-label="Buscar"><i class="far fa-clipboard"></i></i>
           </button>
         </div>
         <button class="br-button circle" type="button" data-dismiss="search" aria-label="Fechar busca"><i class="fas fa-times" aria-hidden="true"></i>
@@ -39,7 +39,7 @@
             <td data-th="Emissão"><%=nota.emissao%></td>
             <td data-th="CNPJ Fornecedor"><%=nota.emitente%></td>
             <td data-th="Nome do Fornecedor"><%=nota.nome_emitente%></td>
-            <td data-th="Chave"><%=nota.chave%></td>
+            <td data-th="Chave"><%=nota.chave%> <i class="far fa-clipboard"></i></td>
             <td data-th="Valor Total">R$ <%= number_to_currency(@totais[nota.id], unit: '', separator: ',', delimiter: '.') %></td>
           </tr>
           <tr>
