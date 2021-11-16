@@ -231,41 +231,82 @@ class XlsImporterAllBase
 
   def unknown
     # reponotas = XlsImporterAllBase.new("/home/rainey/code/PaxecoL/nfe-compra/db/Nota Fiscal cpf 0464.xlsx", 1)
+    puts "Lendo a base de dados"
+    start_time = Time.now
+    p start_time
     registers = xls_reader
-    registers_stat = {}
-    registers.each_key do |cpf|
-      registers[cpf].each_key do |chave|
-        qtt_items = registers[cpf][chave][:itens].length
-        registers_stat[cpf] = [qtt_items, chave]
-      end
-    end
+    puts
+    puts
+    p "Planilha lida... trabalhou por #{((Time.now - start_time) / 60).to_i} minutos"
+    p Time.now
 
-    items_to_save = 0
-    keys_to_record = []
-    registers_stat.sort_by{|_key,value| value}.reverse.each do |stat|
-      if items_to_save < 1_000
-        if stat[1][0] > 1
-          keys_to_record << [stat[0],stat[1][1]]
-          p "CPF: #{stat[0]} CHAVE: #{stat[1][1]} - Qtd itens: #{stat[1][0]}"
+    # Quantidade de mercadorias por CPF
+    items_stat = {}
+    # Chaves de nota com suas respectivas quantidades
+    registers_stat = {}
+    # Correspondência chave de nota -> CPF
+    notas = {}
+    # Conta quantidade de notas por CPF
+    notas_stat = {}
+    registers.each_key do |cpf|
+      notas_stat[cpf] = 0 unless notas_stat.key?(cpf)
+      items_stat[cpf] = 0 unless items_stat.key?(cpf)
+      registers[cpf].each_key do |chave|
+        notas_stat[cpf] += 1
+        notas[chave] = cpf
+        registers_stat[chave] = registers[cpf][chave][:itens].length
+        items_stat[cpf] += registers_stat[chave]
+      end
+    end
+    p "Estatística calculada...  trabalhou por #{((Time.now - start_time) / 60).to_i} minutos"
+    puts ""
+    puts ""
+    p Time.now
+    # MÉTODO PARA ORDENAR OS CPFs SEGUNDO A QTD DE NOTAS E OS COM MAIS ITENS
+    # Array ordenado por CPF (índice 0) e quantidade de notas (índice 1)
+    cpf_notas_ord = notas_stat.sort_by { |_key, value| value }.reverse
+    # Array ordenado por chave da nota (índice 0) e quantidade de itens (índice 1)
+    cpf_items_ord = registers_stat.sort_by { |_key, value| value }.reverse
+    cpf_items_ord.each { |element| element[0] = notas[element[0]] }
+    # Conta linhas p/ evitar atingir o máximo gratuito no Heroku (10_000 linhas)
+    lines = 0
+    # Ìndices para varrer alternadamente os CPFs das notas e itens com + qtd
+    index = 0
+    cpfs_a_considerar = []
+    # How many CPFs with more "notas"?
+    cpfs_origins = 0
+    while index < cpf_notas_ord.length && lines < 1_000 do
+      unless cpfs_a_considerar.include?(cpf_items_ord[index])
+        cpfs_a_considerar << cpf_items_ord[index][0]
+        lines += items_stat[cpfs_a_considerar[-1]]
+      end
+      unless cpfs_a_considerar.include?(cpf_notas_ord[index])
+        cpfs_a_considerar << cpf_notas_ord[index][0]
+        lines += items_stat[cpfs_a_considerar[-1]]
+        cpfs_origins += 1
+      end
+      index += 1
+    end
+    puts "Obtendo os CPFs com mais notas ou com mais mercadorias..."
+    puts "Trabalhou por #{((Time.now - start_time) / 60).to_i} minutos"
+    puts Time.now
+
+    nomes_a_considerar = {}
+    puts "Gravando no BANCO DE DADOS... TENHA PACIÊNCIA!!!"
+    cpfs_a_considerar.each do |cpf_nota|
+      registers[cpf_nota].each_key do |chave|
+        reponota = registers[cpf_nota][chave][:nota]
+        nomes_a_considerar[cpf_nota] = reponota.nome_destinatario
+        reponota.save!
+        registers[cpf_nota][chave][:itens].each do |repoitemnota|
+          repoitemnota.repo_nota_id = reponota.id
+          repoitemnota.save!
         end
-        items_to_save += stat[1][0]
-      else
-        break
       end
     end
-    keys_to_record.each do |cpf_chave|
-      reponota = registers[cpf_chave[0]][cpf_chave[1]][:nota]
-      reponota.save!
-      registers[cpf_chave[0]][cpf_chave[1]][:itens].each do |repoitemnota|
-        repoitemnota.repo_nota_id = reponota.id
-        repoitemnota.save!
-        # p "Chave #{reponota.chave} Descricao do Item #{repoitemnota.descricao}"
-      end
-    end
-    puts "CPFs e chaves correspondentes com mais itens gravados"
-    p keys_to_record[0..2]
-    puts "CPFs com 2 itens (últimos gravados)"
-    p keys_to_record[-2..-1]
+    puts "Tempo total de execução... #{((Time.now - start_time) / 60).to_i} minutos"
+    puts "CPFs gerados: #{cpfs_a_considerar}"
+    return nomes_a_considerar
   end
 
   private
