@@ -39,7 +39,11 @@
                   <div id="notification" class="br-notification">
                     <div class="notification-header">
                       <div class="row justify-content-between">
-                        <div><span class="text-bold"> <%= current_user.name%></span><br/><small> CPF: <%= current_user.cpf %> </small></div>
+                        <div><span class="text-bold"> <%= current_user.name%></span><br/>
+                          <small>
+                            CPF: <%= "#{current_user.cpf.first(3)}.#{current_user.cpf[3..5]}.#{current_user.cpf[6..8]}-#{current_user.cpf.last(2)}" %>
+                          </small>
+                        </div>
                         <%= link_to "Sair", destroy_user_session_path, method: :delete %>
                       </div>
                     </div>
