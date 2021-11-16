@@ -1,7 +1,15 @@
 import { Controller } from "@hotwired/stimulus"
 
+const urlParams = (new URL(document.location)).searchParams;
+
 export default class extends Controller {
   static targets = ["searchBar", "tableHeader", "searchInput", "clipboard"];
+
+  connect() {
+    if (urlParams.get('query')) {
+      $('.collapse').collapse('show');
+    }
+  }
 
   toggleSearch() {
     this.searchBarTarget.classList.add("show");

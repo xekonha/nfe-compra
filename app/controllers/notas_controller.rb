@@ -2,7 +2,7 @@ class NotasController < ApplicationController
   def index
     @notas = Nota.where(cpf_destinatario: current_user.cpf)
     if params[:query].present?
-      @notas = Nota.search_by_supplier(params[:query])
+      @notas = Nota.search_by_supplier_items(params[:query])
     end
     @totais = totalizar(@notas);
   end

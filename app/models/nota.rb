@@ -6,5 +6,8 @@ class Nota < ApplicationRecord
   validates :chave, numericality: true, length: { is: 44 }, uniqueness: true
 
   include PgSearch::Model
-  pg_search_scope :search_by_supplier, against: :nome_emitente
+  pg_search_scope :search_by_supplier_items, against: :nome_emitente,
+    associated_against: {
+      item_notas: :descricao
+    }
 end
